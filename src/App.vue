@@ -4,12 +4,19 @@
     <header v-if="authStore.isAuthenticated">
       <nav class="navbar-glass backdrop-blur-md fixed w-full top-0 z-50">
         <div class="navbar-brand">
-          <router-link to="/" class="text-2xl font-bold text-accent-violet hover:text-accent-cyan transition-colors duration-300">
+          <router-link
+            to="/"
+            class="text-2xl font-bold text-accent-violet hover:text-accent-cyan transition-colors duration-300"
+          >
             <span class="text-shadow-glow-violet">CopyGenius AI</span>
           </router-link>
         </div>
         <div class="navbar-nav">
-          <router-link to="/projects" class="nav-link-underline text-text-light hover:text-accent-cyan">Projects</router-link>
+          <router-link
+            to="/projects"
+            class="nav-link-underline text-text-light hover:text-accent-cyan"
+            >Projects</router-link
+          >
           <button @click="logout" class="btn btn-glass btn-sm">
             <span>Logout</span>
           </button>
@@ -28,23 +35,23 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from './stores/auth';
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from './stores/auth'
 
-const router = useRouter();
-const authStore = useAuthStore();
+const router = useRouter()
+const authStore = useAuthStore()
 
 onMounted(async () => {
-  await authStore.initialize();
-});
+  await authStore.initialize()
+})
 
 async function logout() {
   try {
-    await authStore.signOut();
-    router.push('/login');
+    await authStore.signOut()
+    router.push('/login')
   } catch (error) {
-    console.error('Logout error:', error);
+    console.error('Logout error:', error)
   }
 }
 </script>

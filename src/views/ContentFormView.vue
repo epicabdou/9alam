@@ -18,21 +18,21 @@
             <div class="form-group">
               <label for="title">Title</label>
               <input
-                  id="title"
-                  v-model="form.title"
-                  type="text"
-                  required
-                  placeholder="Give your content a name"
+                id="title"
+                v-model="form.title"
+                type="text"
+                required
+                placeholder="Give your content a name"
               />
             </div>
 
             <div class="form-group">
               <label for="contentType">Content Type</label>
               <select
-                  id="contentType"
-                  v-model="form.contentType"
-                  required
-                  @change="loadTemplateOptions"
+                id="contentType"
+                v-model="form.contentType"
+                required
+                @change="loadTemplateOptions"
               >
                 <option value="" disabled>Select content type</option>
                 <option value="email">Email</option>
@@ -46,11 +46,7 @@
 
             <div class="form-group" v-if="form.contentType && templateOptions.length > 0">
               <label for="templateId">Template (Optional)</label>
-              <select
-                  id="templateId"
-                  v-model="form.templateId"
-                  @change="applyTemplate"
-              >
+              <select id="templateId" v-model="form.templateId" @change="applyTemplate">
                 <option value="">No template - start from scratch</option>
                 <option v-for="template in templateOptions" :key="template.id" :value="template.id">
                   {{ template.name }}
@@ -86,11 +82,11 @@
             <div class="form-group">
               <label for="prompt">Your Prompt</label>
               <textarea
-                  id="prompt"
-                  v-model="form.prompt"
-                  required
-                  placeholder="Describe what you want to create..."
-                  rows="5"
+                id="prompt"
+                v-model="form.prompt"
+                required
+                placeholder="Describe what you want to create..."
+                rows="5"
               ></textarea>
               <div class="help-text">
                 Be specific about your audience, tone, purpose, and key points.
@@ -102,11 +98,7 @@
               <label>Tone</label>
               <div class="checkbox-grid">
                 <label class="checkbox-label" v-for="tone in toneOptions" :key="tone.value">
-                  <input
-                      type="checkbox"
-                      :value="tone.value"
-                      v-model="form.tones"
-                  />
+                  <input type="checkbox" :value="tone.value" v-model="form.tones" />
                   <span>{{ tone.label }}</span>
                 </label>
               </div>
@@ -118,10 +110,10 @@
               <div class="radio-group">
                 <label class="radio-label" v-for="purpose in purposeOptions" :key="purpose.value">
                   <input
-                      type="radio"
-                      :value="purpose.value"
-                      v-model="form.purpose"
-                      name="purpose"
+                    type="radio"
+                    :value="purpose.value"
+                    v-model="form.purpose"
+                    name="purpose"
                   />
                   <span>{{ purpose.label }}</span>
                 </label>
@@ -140,17 +132,27 @@
             </div>
 
             <!-- Template Placeholders - Shows when a template is selected -->
-            <div class="form-group" v-if="selectedTemplate && selectedTemplate.template_data && selectedTemplate.template_data.placeholders && selectedTemplate.template_data.placeholders.length > 0">
+            <div
+              class="form-group"
+              v-if="
+                selectedTemplate &&
+                selectedTemplate.template_data &&
+                selectedTemplate.template_data.placeholders &&
+                selectedTemplate.template_data.placeholders.length > 0
+              "
+            >
               <div class="placeholders-section">
                 <h3 class="subsection-title">Template Placeholders</h3>
-                <p class="help-text">Replace these placeholders in your prompt with your specific information:</p>
+                <p class="help-text">
+                  Replace these placeholders in your prompt with your specific information:
+                </p>
 
                 <div class="placeholder-tags">
                   <span
-                      v-for="placeholder in selectedTemplate.template_data.placeholders"
-                      :key="placeholder"
-                      class="placeholder-tag"
-                      @click="insertPlaceholder(placeholder)"
+                    v-for="placeholder in selectedTemplate.template_data.placeholders"
+                    :key="placeholder"
+                    class="placeholder-tag"
+                    @click="insertPlaceholder(placeholder)"
                   >
                     [{{ placeholder }}]
                   </span>
@@ -160,30 +162,47 @@
           </div>
 
           <!-- Pre-generation Placeholder Values -->
-          <div class="form-section" v-if="selectedTemplate && selectedTemplate.template_data && selectedTemplate.template_data.placeholders && selectedTemplate.template_data.placeholders.length > 0">
+          <div
+            class="form-section"
+            v-if="
+              selectedTemplate &&
+              selectedTemplate.template_data &&
+              selectedTemplate.template_data.placeholders &&
+              selectedTemplate.template_data.placeholders.length > 0
+            "
+          >
             <h2 class="section-title">4. Fill Template Values</h2>
-            <p class="help-text">Enter specific values to personalize your content before generation:</p>
+            <p class="help-text">
+              Enter specific values to personalize your content before generation:
+            </p>
 
             <div class="pre-generation-placeholders">
               <div
-                  v-for="placeholder in selectedTemplate.template_data.placeholders"
-                  :key="placeholder"
-                  class="placeholder-input-group"
+                v-for="placeholder in selectedTemplate.template_data.placeholders"
+                :key="placeholder"
+                class="placeholder-input-group"
               >
                 <label :for="'pre-' + placeholder">[{{ placeholder }}]</label>
                 <input
-                    :id="'pre-' + placeholder"
-                    v-model="preGenerationValues[placeholder]"
-                    type="text"
-                    :placeholder="'Enter value for ' + placeholder"
+                  :id="'pre-' + placeholder"
+                  v-model="preGenerationValues[placeholder]"
+                  type="text"
+                  :placeholder="'Enter value for ' + placeholder"
                 />
               </div>
             </div>
 
-            <div class="placeholder-summary" v-if="Object.keys(preGenerationValues).some(key => preGenerationValues[key])">
+            <div
+              class="placeholder-summary"
+              v-if="Object.keys(preGenerationValues).some((key) => preGenerationValues[key])"
+            >
               <h3 class="subsection-title">Values to be used:</h3>
               <ul class="placeholder-summary-list">
-                <li v-for="(value, placeholder) in preGenerationValues" :key="placeholder" v-if="value">
+                <li
+                  v-for="(value, placeholder) in preGenerationValues"
+                  :key="placeholder"
+                  v-if="value"
+                >
                   <strong>[{{ placeholder }}]:</strong> {{ value }}
                 </li>
               </ul>
@@ -195,18 +214,8 @@
           </div>
 
           <div class="form-actions">
-            <button
-                type="button"
-                @click="$router.go(-1)"
-                class="btn btn-secondary"
-            >
-              Cancel
-            </button>
-            <button
-                type="submit"
-                class="btn btn-primary"
-                :disabled="generatingContent"
-            >
+            <button type="button" @click="$router.go(-1)" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary" :disabled="generatingContent">
               <span v-if="generatingContent">
                 <span class="spinner-inline"></span>
                 Generating...
@@ -230,11 +239,21 @@
               <button @click="toggleEditMode" class="btn btn-sm btn-outline">
                 {{ isEditing ? 'Preview' : 'Edit' }}
               </button>
-              <button v-if="!props.isEditing" @click="saveContent" class="btn btn-sm btn-primary" :disabled="saving">
+              <button
+                v-if="!props.isEditing"
+                @click="saveContent"
+                class="btn btn-sm btn-primary"
+                :disabled="saving"
+              >
                 <span v-if="saving">Saving...</span>
                 <span v-else>Save</span>
               </button>
-              <button v-else @click="updateContent" class="btn btn-sm btn-primary" :disabled="saving">
+              <button
+                v-else
+                @click="updateContent"
+                class="btn btn-sm btn-primary"
+                :disabled="saving"
+              >
                 <span v-if="saving">Updating...</span>
                 <span v-else>Update</span>
               </button>
@@ -245,17 +264,21 @@
           <div class="generated-content-body">
             <!-- Edit Mode -->
             <div v-if="editMode" class="content-edit-mode">
-      <textarea
-          v-model="generatedContent"
-          class="content-editor"
-          rows="20"
-          spellcheck="true"
-          :placeholder="editPlaceholder"
-      ></textarea>
+              <textarea
+                v-model="generatedContent"
+                class="content-editor"
+                rows="20"
+                spellcheck="true"
+                :placeholder="editPlaceholder"
+              ></textarea>
             </div>
 
             <!-- Preview Mode with Placeholder Highlighting -->
-            <div v-else class="generated-content-preview" v-html="formattedContentWithHighlights"></div>
+            <div
+              v-else
+              class="generated-content-preview"
+              v-html="formattedContentWithHighlights"
+            ></div>
           </div>
 
           <!-- Placeholder Values for Generated Content -->
@@ -265,17 +288,17 @@
 
             <div class="placeholder-inputs">
               <div
-                  v-for="placeholder in detectedPlaceholders"
-                  :key="placeholder"
-                  class="placeholder-input-group"
+                v-for="placeholder in detectedPlaceholders"
+                :key="placeholder"
+                class="placeholder-input-group"
               >
                 <label :for="'placeholder-' + placeholder">[{{ placeholder }}]</label>
                 <input
-                    :id="'placeholder-' + placeholder"
-                    v-model="placeholderValues[placeholder]"
-                    type="text"
-                    @input="updateContentWithPlaceholders"
-                    :placeholder="'Enter value for ' + placeholder"
+                  :id="'placeholder-' + placeholder"
+                  v-model="placeholderValues[placeholder]"
+                  type="text"
+                  @input="updateContentWithPlaceholders"
+                  :placeholder="'Enter value for ' + placeholder"
                 />
               </div>
             </div>
@@ -296,24 +319,24 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useContentStore } from '@/stores/content';
-import { useProjectsStore } from '@/stores/projects';
-import { supabase } from '@/services/supabase';
-import { marked } from 'marked';
+import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useContentStore } from '@/stores/content'
+import { useProjectsStore } from '@/stores/projects'
+import { supabase } from '@/services/supabase'
+import { marked } from 'marked'
 
 const props = defineProps({
   isEditing: {
     type: Boolean,
-    default: false
-  }
-});
+    default: false,
+  },
+})
 
-const route = useRoute();
-const router = useRouter();
-const contentStore = useContentStore();
-const projectsStore = useProjectsStore();
+const route = useRoute()
+const router = useRouter()
+const contentStore = useContentStore()
+const projectsStore = useProjectsStore()
 
 // Form state
 const form = reactive({
@@ -327,19 +350,19 @@ const form = reactive({
   language: 'en',
   additionalInstructions: '',
   aiProvider: 'openai',
-  temperature: 0.7
-});
+  temperature: 0.7,
+})
 
 // UI state
-const generatedContent = ref('');
-const loading = ref(false);
-const generatingContent = ref(false);
-const saving = ref(false);
-const error = ref('');
-const copied = ref(false);
-const showAdditionalInstructions = ref(false);
-const templateOptions = ref([]);
-const selectedTemplate = ref(null);
+const generatedContent = ref('')
+const loading = ref(false)
+const generatingContent = ref(false)
+const saving = ref(false)
+const error = ref('')
+const copied = ref(false)
+const showAdditionalInstructions = ref(false)
+const templateOptions = ref([])
+const selectedTemplate = ref(null)
 
 // Options for form selectors
 const toneOptions = [
@@ -350,8 +373,8 @@ const toneOptions = [
   { value: 'humorous', label: 'Humorous' },
   { value: 'empathetic', label: 'Empathetic' },
   { value: 'inspirational', label: 'Inspirational' },
-  { value: 'persuasive', label: 'Persuasive' }
-];
+  { value: 'persuasive', label: 'Persuasive' },
+]
 
 // Purpose options based on content type
 const purposeOptions = computed(() => {
@@ -362,185 +385,185 @@ const purposeOptions = computed(() => {
         { value: 'newsletter', label: 'Newsletter' },
         { value: 'promotional', label: 'Promotional' },
         { value: 'reengagement', label: 'Re-engagement' },
-        { value: 'announcement', label: 'Announcement' }
-      ];
+        { value: 'announcement', label: 'Announcement' },
+      ]
     case 'social_post':
       return [
         { value: 'engagement', label: 'Engagement' },
         { value: 'awareness', label: 'Brand Awareness' },
         { value: 'promotion', label: 'Promotion' },
         { value: 'educational', label: 'Educational' },
-        { value: 'testimonial', label: 'Testimonial' }
-      ];
+        { value: 'testimonial', label: 'Testimonial' },
+      ]
     case 'ad_copy':
       return [
         { value: 'conversion', label: 'Conversion' },
         { value: 'brand_awareness', label: 'Brand Awareness' },
         { value: 'retargeting', label: 'Retargeting' },
-        { value: 'promotion', label: 'Promotion' }
-      ];
+        { value: 'promotion', label: 'Promotion' },
+      ]
     case 'blog_post':
       return [
         { value: 'educational', label: 'Educational' },
         { value: 'how_to', label: 'How-To Guide' },
         { value: 'listicle', label: 'List Article' },
         { value: 'case_study', label: 'Case Study' },
-        { value: 'thought_leadership', label: 'Thought Leadership' }
-      ];
+        { value: 'thought_leadership', label: 'Thought Leadership' },
+      ]
     case 'product_description':
       return [
         { value: 'features', label: 'Feature-Focused' },
         { value: 'benefits', label: 'Benefit-Focused' },
         { value: 'problem_solution', label: 'Problem-Solution' },
-        { value: 'comparison', label: 'Comparison' }
-      ];
+        { value: 'comparison', label: 'Comparison' },
+      ]
     case 'website_copy':
       return [
         { value: 'homepage', label: 'Homepage' },
         { value: 'about', label: 'About Us' },
         { value: 'services', label: 'Services/Products' },
         { value: 'landing', label: 'Landing Page' },
-        { value: 'faq', label: 'FAQ' }
-      ];
+        { value: 'faq', label: 'FAQ' },
+      ]
     default:
-      return [];
+      return []
   }
-});
+})
 
 // Format generated content with markdown
 // State for content editing and placeholder handling
-const editMode = ref(false);
-const placeholderValues = ref({});
-const detectedPlaceholders = ref([]);
-const originalContent = ref('');
-const editPlaceholder = 'Edit your content here. Use [placeholder_name] for dynamic content.';
+const editMode = ref(false)
+const placeholderValues = ref({})
+const detectedPlaceholders = ref([])
+const originalContent = ref('')
+const editPlaceholder = 'Edit your content here. Use [placeholder_name] for dynamic content.'
 
 // Format content with placeholder highlighting
 const formattedContentWithHighlights = computed(() => {
-  if (!generatedContent.value) return '';
+  if (!generatedContent.value) return ''
 
   // First apply any placeholder values
-  let content = generatedContent.value;
+  let content = generatedContent.value
   for (const [placeholder, value] of Object.entries(placeholderValues.value)) {
     if (value) {
-      const regex = new RegExp(`\\[${placeholder}\\]`, 'g');
-      content = content.replace(regex, `<span class="filled-placeholder">${value}</span>`);
+      const regex = new RegExp(`\\[${placeholder}\\]`, 'g')
+      content = content.replace(regex, `<span class="filled-placeholder">${value}</span>`)
     }
   }
 
   // Then highlight remaining placeholders
-  content = content.replace(/\[([^\]]+)\]/g, '<span class="highlight-placeholder">[$1]</span>');
+  content = content.replace(/\[([^\]]+)\]/g, '<span class="highlight-placeholder">[$1]</span>')
 
   // Convert markdown to HTML
-  return marked(content);
-});
+  return marked(content)
+})
 
 // Toggle between edit and preview mode
 function toggleEditMode() {
   if (!editMode.value) {
     // Switching to edit mode
-    originalContent.value = generatedContent.value;
+    originalContent.value = generatedContent.value
   } else {
     // Switching to preview mode
-    detectPlaceholders();
+    detectPlaceholders()
   }
-  editMode.value = !editMode.value;
+  editMode.value = !editMode.value
 }
 
 // Detect placeholders in the generated content
 function detectPlaceholders() {
-  const placeholders = [];
-  const regex = /\[([^\]]+)\]/g;
-  let match;
+  const placeholders = []
+  const regex = /\[([^\]]+)\]/g
+  let match
 
   while ((match = regex.exec(generatedContent.value)) !== null) {
     if (!placeholders.includes(match[1])) {
-      placeholders.push(match[1]);
+      placeholders.push(match[1])
     }
   }
 
-  detectedPlaceholders.value = placeholders;
+  detectedPlaceholders.value = placeholders
 
   // Initialize placeholder values if not already set
-  placeholders.forEach(placeholder => {
+  placeholders.forEach((placeholder) => {
     if (!placeholderValues.value[placeholder]) {
-      placeholderValues.value[placeholder] = '';
+      placeholderValues.value[placeholder] = ''
     }
-  });
+  })
 }
 
 // Update content with placeholder values in real-time
 function updateContentWithPlaceholders() {
   // Create a temporary copy of the content to modify
-  let tempContent = originalContent.value || generatedContent.value;
+  let tempContent = originalContent.value || generatedContent.value
 
   // Replace each placeholder with its value if available
   for (const [placeholder, value] of Object.entries(placeholderValues.value)) {
     if (value) {
-      const regex = new RegExp(`\\[${placeholder}\\]`, 'g');
-      tempContent = tempContent.replace(regex, value);
+      const regex = new RegExp(`\\[${placeholder}\\]`, 'g')
+      tempContent = tempContent.replace(regex, value)
     }
   }
 
   // Only update if not in edit mode to avoid overwriting edits
   if (!editMode.value) {
-    generatedContent.value = tempContent;
+    generatedContent.value = tempContent
   }
 }
 
 // Apply all placeholder values at once
 function applyAllPlaceholders() {
-  let tempContent = originalContent.value || generatedContent.value;
+  let tempContent = originalContent.value || generatedContent.value
 
   for (const [placeholder, value] of Object.entries(placeholderValues.value)) {
     if (value) {
-      const regex = new RegExp(`\\[${placeholder}\\]`, 'g');
-      tempContent = tempContent.replace(regex, value);
+      const regex = new RegExp(`\\[${placeholder}\\]`, 'g')
+      tempContent = tempContent.replace(regex, value)
     }
   }
 
-  generatedContent.value = tempContent;
+  generatedContent.value = tempContent
 
   // Update original content to include these changes
-  originalContent.value = tempContent;
+  originalContent.value = tempContent
 
   // Re-detect placeholders as some may have been removed
-  detectPlaceholders();
+  detectPlaceholders()
 }
 
 // Clear all placeholder values
 function clearAllPlaceholders() {
-  placeholderValues.value = {};
+  placeholderValues.value = {}
 
   // Reset to original content
   if (originalContent.value) {
-    generatedContent.value = originalContent.value;
+    generatedContent.value = originalContent.value
   }
 
   // Re-detect placeholders
-  detectPlaceholders();
+  detectPlaceholders()
 }
 
 // Load template options when content type changes
 async function loadTemplateOptions() {
   if (!form.contentType) {
-    templateOptions.value = [];
-    return;
+    templateOptions.value = []
+    return
   }
 
   try {
     const { data, error: fetchError } = await supabase
-        .from('templates')
-        .select('id, name, description, content_type, template_data')
-        .eq('content_type', form.contentType)
-        .eq('is_public', true);
+      .from('templates')
+      .select('id, name, description, content_type, template_data')
+      .eq('content_type', form.contentType)
+      .eq('is_public', true)
 
-    if (fetchError) throw fetchError;
+    if (fetchError) throw fetchError
 
-    templateOptions.value = data || [];
+    templateOptions.value = data || []
 
     // For backward compatibility, check if template_data exists
-    templateOptions.value = templateOptions.value.map(template => {
+    templateOptions.value = templateOptions.value.map((template) => {
       if (!template.template_data) {
         // Create a basic template_data if not present
         template.template_data = {
@@ -549,71 +572,71 @@ async function loadTemplateOptions() {
           tone: ['professional'],
           purpose: '',
           contentLength: 'medium',
-          suggestedPrompt: `Write ${form.contentType} content based on the following template.`
-        };
+          suggestedPrompt: `Write ${form.contentType} content based on the following template.`,
+        }
       }
-      return template;
-    });
+      return template
+    })
   } catch (err) {
-    console.error('Error loading templates:', err);
-    error.value = 'Failed to load templates. Please try again.';
+    console.error('Error loading templates:', err)
+    error.value = 'Failed to load templates. Please try again.'
   }
 }
 
 // State for pre-generation placeholder values
-const preGenerationValues = ref({});
+const preGenerationValues = ref({})
 
 // Apply selected template with pre-generation placeholder fields
 function applyTemplate() {
   if (!form.templateId) {
-    selectedTemplate.value = null;
-    preGenerationValues.value = {};
-    return;
+    selectedTemplate.value = null
+    preGenerationValues.value = {}
+    return
   }
 
-  const template = templateOptions.value.find(t => t.id === form.templateId);
+  const template = templateOptions.value.find((t) => t.id === form.templateId)
   if (template && template.template_data) {
-    selectedTemplate.value = template;
+    selectedTemplate.value = template
 
     // Initialize placeholder input fields
     if (template.template_data.placeholders && Array.isArray(template.template_data.placeholders)) {
-      const placeholderObj = {};
-      template.template_data.placeholders.forEach(placeholder => {
-        placeholderObj[placeholder] = '';
-      });
-      preGenerationValues.value = placeholderObj;
+      const placeholderObj = {}
+      template.template_data.placeholders.forEach((placeholder) => {
+        placeholderObj[placeholder] = ''
+      })
+      preGenerationValues.value = placeholderObj
     }
 
     // Apply the template data to populate the form
-    const templateData = template.template_data;
+    const templateData = template.template_data
 
     // Set title if not already specified by user
     if (!form.title || form.title.trim() === '') {
-      form.title = templateData.title || '';
+      form.title = templateData.title || ''
     }
 
     // Set tone if available in template
     if (templateData.tone && Array.isArray(templateData.tone)) {
-      form.tones = [...templateData.tone];
+      form.tones = [...templateData.tone]
     }
 
     // Set purpose if available in template
     if (templateData.purpose) {
-      form.purpose = templateData.purpose;
+      form.purpose = templateData.purpose
     }
 
     // Set content length if available
     if (templateData.contentLength) {
-      form.contentLength = templateData.contentLength;
+      form.contentLength = templateData.contentLength
     }
 
     // Set the suggested prompt if not already entered
     if (!form.prompt || form.prompt.trim() === '') {
-      form.prompt = templateData.suggestedPrompt || '';
+      form.prompt = templateData.suggestedPrompt || ''
 
       // If there's a structure field, add it after the prompt
       if (templateData.structure) {
-        form.prompt += '\n\n--- Suggested Structure ---\n\n' + templateData.structure;
+        form.prompt += '\n\n--- Suggested Structure ---\n\n' + templateData.structure
       }
     }
   }
@@ -621,74 +644,75 @@ function applyTemplate() {
 
 // Toggle additional instructions section
 function toggleAdditionalInstructions() {
-  showAdditionalInstructions.value = !showAdditionalInstructions.value;
+  showAdditionalInstructions.value = !showAdditionalInstructions.value
 }
 
 // Insert placeholder into prompt at cursor or append
 function insertPlaceholder(placeholder) {
-  const promptElement = document.getElementById('prompt');
+  const promptElement = document.getElementById('prompt')
 
   if (promptElement) {
-    const cursorPos = promptElement.selectionStart;
-    const textBefore = form.prompt.substring(0, cursorPos);
-    const textAfter = form.prompt.substring(cursorPos);
+    const cursorPos = promptElement.selectionStart
+    const textBefore = form.prompt.substring(0, cursorPos)
+    const textAfter = form.prompt.substring(cursorPos)
 
-    form.prompt = textBefore + `[${placeholder}]` + textAfter;
+    form.prompt = textBefore + `[${placeholder}]` + textAfter
 
     // Set focus back to the prompt field
     setTimeout(() => {
-      promptElement.focus();
+      promptElement.focus()
       // Place cursor after the inserted placeholder
-      const newCursorPos = cursorPos + placeholder.length + 2; // +2 for the brackets
-      promptElement.setSelectionRange(newCursorPos, newCursorPos);
-    }, 0);
+      const newCursorPos = cursorPos + placeholder.length + 2 // +2 for the brackets
+      promptElement.setSelectionRange(newCursorPos, newCursorPos)
+    }, 0)
   } else {
     // If we can't get the element, just append to the end
-    form.prompt += ` [${placeholder}]`;
+    form.prompt += ` [${placeholder}]`
   }
 }
 
 // Build the final prompt with all form options
 function buildFullPrompt() {
-  let fullPrompt = form.prompt;
+  let fullPrompt = form.prompt
 
   // Add tone preferences
   if (form.tones.length > 0) {
-    fullPrompt += `\n\nTone: ${form.tones.join(', ')}`;
+    fullPrompt += `\n\nTone: ${form.tones.join(', ')}`
   }
 
   // Add purpose
   if (form.purpose) {
-    const purposeLabel = purposeOptions.value.find(p => p.value === form.purpose)?.label || form.purpose;
-    fullPrompt += `\n\nPurpose: ${purposeLabel}`;
+    const purposeLabel =
+      purposeOptions.value.find((p) => p.value === form.purpose)?.label || form.purpose
+    fullPrompt += `\n\nPurpose: ${purposeLabel}`
   }
 
   // Add content length
-  fullPrompt += `\n\nLength: ${form.contentLength}`;
+  fullPrompt += `\n\nLength: ${form.contentLength}`
 
   // Add language preference
   const languageNames = {
-    'en': 'English',
-    'es': 'Spanish',
-    'fr': 'French',
-    'de': 'German',
-    'it': 'Italian',
-    'pt': 'Portuguese',
-    'ru': 'Russian',
-    'zh': 'Chinese',
-    'ja': 'Japanese',
-    'ko': 'Korean',
-    'ar': 'Arabic'
-  };
+    en: 'English',
+    es: 'Spanish',
+    fr: 'French',
+    de: 'German',
+    it: 'Italian',
+    pt: 'Portuguese',
+    ru: 'Russian',
+    zh: 'Chinese',
+    ja: 'Japanese',
+    ko: 'Korean',
+    ar: 'Arabic',
+  }
 
-  fullPrompt += `\n\nLanguage: ${languageNames[form.language] || form.language}`;
+  fullPrompt += `\n\nLanguage: ${languageNames[form.language] || form.language}`
 
   // Add additional instructions
   if (form.additionalInstructions) {
-    fullPrompt += `\n\nAdditional Instructions: ${form.additionalInstructions}`;
+    fullPrompt += `\n\nAdditional Instructions: ${form.additionalInstructions}`
   }
 
-  return fullPrompt;
+  return fullPrompt
 }
 
 // Initialize component
@@ -697,155 +721,170 @@ onMounted(async () => {
   try {
     // First check if we already have it
     const { data: existingTemplates } = await supabase
-        .from('templates')
-        .select('id')
-        .eq('name', 'Email Promotionnel (Français)')
-        .eq('content_type', 'email');
+      .from('templates')
+      .select('id')
+      .eq('name', 'Email Promotionnel (Français)')
+      .eq('content_type', 'email')
 
     if (!existingTemplates || existingTemplates.length === 0) {
       // Add the French template
-      await supabase
-          .from('templates')
-          .insert({
-            name: 'Email Promotionnel (Français)',
-            description: 'Modèle d\'email pour une offre limitée ou une promotion spéciale',
-            content_type: 'email',
-            is_public: true,
-            template_data: {
-              title: '[Offre Limitée] Économisez [X]% sur [Produit/Service]',
-              structure: 'Objet : [Offre Limitée] Économisez [X]% sur [Produit/Service]\n\nBonjour [Prénom],\n\nNous sommes ravis de vous offrir une réduction exclusive sur notre [Produit/Service].\n\n[Brève description de l\'offre et de ses avantages]\n\n🔥 [Détails spécifiques de l\'offre, ex. : "Bénéficiez de 20% de réduction sur tous nos abonnements premium"]\n⏰ Offre valable jusqu\'au : [Date de fin]\n🎁 Code promo : [CODE_REDUCTION]\n\n[Appel à l\'action, ex. : "Cliquez ici pour profiter de votre réduction"]\n\nNe manquez pas cette opportunité limitée dans le temps !\n\nCordialement,\n[Votre Prénom]\n[Nom de l\'entreprise]',
-              tone: ['persuasive', 'friendly'],
-              purpose: 'promotional',
-              contentLength: 'medium',
-              placeholders: ['Offre Limitée', 'X', 'Produit/Service', 'Prénom', 'Brève description', 'Détails spécifiques', 'Date de fin', 'CODE_REDUCTION', 'Appel à l\'action', 'Votre Prénom', 'Nom de l\'entreprise'],
-              suggestedPrompt: 'Créez un email promotionnel pour une offre à durée limitée sur [Produit/Service]. L\'email doit créer un sentiment d\'urgence et inciter à l\'action.'
-            }
-          });
+      await supabase.from('templates').insert({
+        name: 'Email Promotionnel (Français)',
+        description: "Modèle d'email pour une offre limitée ou une promotion spéciale",
+        content_type: 'email',
+        is_public: true,
+        template_data: {
+          title: '[Offre Limitée] Économisez [X]% sur [Produit/Service]',
+          structure:
+            "Objet : [Offre Limitée] Économisez [X]% sur [Produit/Service]\n\nBonjour [Prénom],\n\nNous sommes ravis de vous offrir une réduction exclusive sur notre [Produit/Service].\n\n[Brève description de l'offre et de ses avantages]\n\n🔥 [Détails spécifiques de l'offre, ex. : \"Bénéficiez de 20% de réduction sur tous nos abonnements premium\"]\n⏰ Offre valable jusqu'au : [Date de fin]\n🎁 Code promo : [CODE_REDUCTION]\n\n[Appel à l'action, ex. : \"Cliquez ici pour profiter de votre réduction\"]\n\nNe manquez pas cette opportunité limitée dans le temps !\n\nCordialement,\n[Votre Prénom]\n[Nom de l'entreprise]",
+          tone: ['persuasive', 'friendly'],
+          purpose: 'promotional',
+          contentLength: 'medium',
+          placeholders: [
+            'Offre Limitée',
+            'X',
+            'Produit/Service',
+            'Prénom',
+            'Brève description',
+            'Détails spécifiques',
+            'Date de fin',
+            'CODE_REDUCTION',
+            "Appel à l'action",
+            'Votre Prénom',
+            "Nom de l'entreprise",
+          ],
+          suggestedPrompt:
+            "Créez un email promotionnel pour une offre à durée limitée sur [Produit/Service]. L'email doit créer un sentiment d'urgence et inciter à l'action.",
+        },
+      })
     }
   } catch (err) {
-    console.warn('Error adding French template:', err);
+    console.warn('Error adding French template:', err)
     // Don't show error to user, continue with normal initialization
   }
 
   if (props.isEditing) {
-    const contentId = route.params.id;
-    loading.value = true;
+    const contentId = route.params.id
+    loading.value = true
 
     try {
-      const content = await contentStore.fetchContentPiece(contentId);
+      const content = await contentStore.fetchContentPiece(contentId)
       if (content) {
-        form.title = content.title || '';
-        form.contentType = content.content_type || '';
-        form.prompt = content.prompt || '';
+        form.title = content.title || ''
+        form.contentType = content.content_type || ''
+        form.prompt = content.prompt || ''
 
         // Store original content for placeholder handling
-        generatedContent.value = content.generated_content || '';
-        originalContent.value = content.generated_content || '';
+        generatedContent.value = content.generated_content || ''
+        originalContent.value = content.generated_content || ''
 
         // Try to parse additional form fields from the prompt
         try {
-          const toneMatch = content.prompt.match(/Tone: ([^]*?)(?=\n\n|$)/);
+          const toneMatch = content.prompt.match(/Tone: ([^]*?)(?=\n\n|$)/)
           if (toneMatch) {
-            form.tones = toneMatch[1].split(', ').map(t => t.trim());
+            form.tones = toneMatch[1].split(', ').map((t) => t.trim())
           }
 
-          const purposeMatch = content.prompt.match(/Purpose: ([^]*?)(?=\n\n|$)/);
+          const purposeMatch = content.prompt.match(/Purpose: ([^]*?)(?=\n\n|$)/)
           if (purposeMatch) {
-            form.purpose = purposeMatch[1];
+            form.purpose = purposeMatch[1]
           }
 
-          const lengthMatch = content.prompt.match(/Length: ([^]*?)(?=\n\n|$)/);
+          const lengthMatch = content.prompt.match(/Length: ([^]*?)(?=\n\n|$)/)
           if (lengthMatch) {
-            form.contentLength = lengthMatch[1];
+            form.contentLength = lengthMatch[1]
           }
 
-          const languageMatch = content.prompt.match(/Language: ([^]*?)(?=\n\n|$)/);
+          const languageMatch = content.prompt.match(/Language: ([^]*?)(?=\n\n|$)/)
           if (languageMatch) {
             // Convert language name back to code
-            const langName = languageMatch[1].trim();
+            const langName = languageMatch[1].trim()
             const langEntries = Object.entries({
-              'en': 'English',
-              'es': 'Spanish',
-              'fr': 'French',
-              'de': 'German',
-              'it': 'Italian',
-              'pt': 'Portuguese',
-              'ru': 'Russian',
-              'zh': 'Chinese',
-              'ja': 'Japanese',
-              'ko': 'Korean',
-              'ar': 'Arabic'
-            });
+              en: 'English',
+              es: 'Spanish',
+              fr: 'French',
+              de: 'German',
+              it: 'Italian',
+              pt: 'Portuguese',
+              ru: 'Russian',
+              zh: 'Chinese',
+              ja: 'Japanese',
+              ko: 'Korean',
+              ar: 'Arabic',
+            })
 
-            const langCode = langEntries.find(([code, name]) => name === langName)?.[0];
+            const langCode = langEntries.find(([code, name]) => name === langName)?.[0]
             if (langCode) {
-              form.language = langCode;
+              form.language = langCode
             }
           }
 
-          const additionalMatch = content.prompt.match(/Additional Instructions: ([^]*?)(?=\n\n|$)/);
+          const additionalMatch = content.prompt.match(/Additional Instructions: ([^]*?)(?=\n\n|$)/)
           if (additionalMatch) {
-            form.additionalInstructions = additionalMatch[1];
-            showAdditionalInstructions.value = true;
+            form.additionalInstructions = additionalMatch[1]
+            showAdditionalInstructions.value = true
           }
         } catch (parseErr) {
-          console.warn('Error parsing prompt format:', parseErr);
+          console.warn('Error parsing prompt format:', parseErr)
           // Don't show error to user, just keep the content as is
         }
 
         // Detect placeholders
         if (generatedContent.value) {
-          detectPlaceholders();
+          detectPlaceholders()
         }
 
         // Load template options
         if (form.contentType) {
-          await loadTemplateOptions();
+          await loadTemplateOptions()
         }
       } else {
-        router.push('/');
+        router.push('/')
       }
     } catch (err) {
-      error.value = 'Error loading content. Please try again.';
-      console.error('Error loading content:', err);
+      error.value = 'Error loading content. Please try again.'
+      console.error('Error loading content:', err)
     } finally {
-      loading.value = false;
+      loading.value = false
     }
   }
-});
+})
 
 // Watch for content type changes to load templates
-watch(() => form.contentType, async (newType) => {
-  if (newType) {
-    form.templateId = ''; // Reset template selection
-    selectedTemplate.value = null;
-    await loadTemplateOptions();
-  }
-});
+watch(
+  () => form.contentType,
+  async (newType) => {
+    if (newType) {
+      form.templateId = '' // Reset template selection
+      selectedTemplate.value = null
+      await loadTemplateOptions()
+    }
+  },
+)
 
 // Generate content from form data
 async function generateContent() {
-  generatingContent.value = true;
-  error.value = '';
+  generatingContent.value = true
+  error.value = ''
 
   try {
     // Build the final prompt
-    let finalPrompt = buildFullPrompt();
+    let finalPrompt = buildFullPrompt()
 
     // Add pre-generation placeholder values information
-    if (Object.keys(preGenerationValues.value).some(key => preGenerationValues.value[key])) {
-      finalPrompt += '\n\n--- Pre-filled Values ---\n';
+    if (Object.keys(preGenerationValues.value).some((key) => preGenerationValues.value[key])) {
+      finalPrompt += '\n\n--- Pre-filled Values ---\n'
 
       for (const [placeholder, value] of Object.entries(preGenerationValues.value)) {
         if (value) {
-          finalPrompt += `\n[${placeholder}]: ${value}`;
+          finalPrompt += `\n[${placeholder}]: ${value}`
         }
       }
     }
 
     const projectId = props.isEditing
-        ? contentStore.currentContent?.project_id
-        : route.params.projectId;
+      ? contentStore.currentContent?.project_id
+      : route.params.projectId
 
     const content = await contentStore.generateContent({
       prompt: finalPrompt,
@@ -853,118 +892,119 @@ async function generateContent() {
       projectId,
       aiProvider: form.aiProvider,
       temperature: parseFloat(form.temperature),
-      additionalInstructions: '' // Already included in the final prompt
-    });
+      additionalInstructions: '', // Already included in the final prompt
+    })
 
     // Apply pre-generation values to the generated content
-    let processedContent = content;
-    if (Object.keys(preGenerationValues.value).some(key => preGenerationValues.value[key])) {
+    let processedContent = content
+    if (Object.keys(preGenerationValues.value).some((key) => preGenerationValues.value[key])) {
       for (const [placeholder, value] of Object.entries(preGenerationValues.value)) {
         if (value) {
-          const regex = new RegExp(`\\[${placeholder}\\]`, 'g');
-          processedContent = processedContent.replace(regex, value);
+          const regex = new RegExp(`\\[${placeholder}\\]`, 'g')
+          processedContent = processedContent.replace(regex, value)
         }
       }
     }
 
-    generatedContent.value = processedContent;
-    originalContent.value = processedContent; // Store original for placeholder handling
+    generatedContent.value = processedContent
+    originalContent.value = processedContent // Store original for placeholder handling
 
     // Initialize placeholder values with what we already have
-    placeholderValues.value = { ...preGenerationValues.value };
+    placeholderValues.value = { ...preGenerationValues.value }
 
     // Detect any remaining placeholders in the generated content
-    detectPlaceholders();
+    detectPlaceholders()
 
     // Switch to preview mode if in edit mode
-    editMode.value = false;
+    editMode.value = false
   } catch (err) {
-    error.value = err.message || 'Error generating content. Please try again.';
-    console.error('Error generating content:', err);
+    error.value = err.message || 'Error generating content. Please try again.'
+    console.error('Error generating content:', err)
   } finally {
-    generatingContent.value = false;
+    generatingContent.value = false
   }
 }
 
 // Save content to database
 async function saveContent() {
-  if (!generatedContent.value) return;
+  if (!generatedContent.value) return
 
-  saving.value = true;
-  error.value = '';
+  saving.value = true
+  error.value = ''
 
   try {
-    const projectId = route.params.projectId;
+    const projectId = route.params.projectId
 
     const contentData = {
       project_id: projectId,
       title: form.title,
       content_type: form.contentType,
       prompt: buildFullPrompt(),
-      generated_content: generatedContent.value
-    };
+      generated_content: generatedContent.value,
+    }
 
     const { data: newContent, error: createError } = await supabase
-        .from('content_pieces')
-        .insert(contentData)
-        .select()
-        .single();
+      .from('content_pieces')
+      .insert(contentData)
+      .select()
+      .single()
 
-    if (createError) throw createError;
+    if (createError) throw createError
 
     // After saving, redirect to the content detail page
-    router.push(`/content/${newContent.id}`);
+    router.push(`/content/${newContent.id}`)
   } catch (err) {
-    error.value = err.message || 'Error saving content. Please try again.';
-    console.error('Error saving content:', err);
+    error.value = err.message || 'Error saving content. Please try again.'
+    console.error('Error saving content:', err)
   } finally {
-    saving.value = false;
+    saving.value = false
   }
 }
 
 // Update existing content
 async function updateContent() {
-  if (!generatedContent.value) return;
+  if (!generatedContent.value) return
 
-  saving.value = true;
-  error.value = '';
+  saving.value = true
+  error.value = ''
 
   try {
-    const contentId = route.params.id;
+    const contentId = route.params.id
 
     const contentData = {
       title: form.title,
       content_type: form.contentType,
       prompt: buildFullPrompt(),
-      generated_content: generatedContent.value
-    };
+      generated_content: generatedContent.value,
+    }
 
-    await contentStore.updateContent(contentId, contentData);
+    await contentStore.updateContent(contentId, contentData)
 
     // After updating, redirect to the content detail page
-    router.push(`/content/${contentId}`);
+    router.push(`/content/${contentId}`)
   } catch (err) {
-    error.value = err.message || 'Error updating content. Please try again.';
-    console.error('Error updating content:', err);
+    error.value = err.message || 'Error updating content. Please try again.'
+    console.error('Error updating content:', err)
   } finally {
-    saving.value = false;
+    saving.value = false
   }
 }
 
 // Copy generated content to clipboard
 function copyToClipboard() {
-  if (!generatedContent.value) return;
+  if (!generatedContent.value) return
 
-  navigator.clipboard.writeText(generatedContent.value)
-      .then(() => {
-        copied.value = true;
-        setTimeout(() => {
-          copied.value = false;
-        }, 2000);
-      })
-      .catch(err => {
-        console.error('Error copying to clipboard:', err);
-      });
+  navigator.clipboard
+    .writeText(generatedContent.value)
+    .then(() => {
+      copied.value = true
+      setTimeout(() => {
+        copied.value = false
+      }, 2000)
+    })
+    .catch((err) => {
+      console.error('Error copying to clipboard:', err)
+    })
 }
 </script>
 
@@ -1032,7 +1072,8 @@ function copyToClipboard() {
   margin-top: 0.5rem;
 }
 
-.radio-label, .checkbox-label {
+.radio-label,
+.checkbox-label {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -1135,8 +1176,12 @@ function copyToClipboard() {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .btn-sm {

@@ -8,25 +8,25 @@
         <div class="form-group">
           <label for="email">Email</label>
           <input
-              id="email"
-              v-model="email"
-              type="email"
-              required
-              placeholder="Your email address"
-              class="form-input"
+            id="email"
+            v-model="email"
+            type="email"
+            required
+            placeholder="Your email address"
+            class="form-input"
           />
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
           <input
-              id="password"
-              v-model="password"
-              type="password"
-              required
-              placeholder="Create a password"
-              minlength="6"
-              class="form-input"
+            id="password"
+            v-model="password"
+            type="password"
+            required
+            placeholder="Create a password"
+            minlength="6"
+            class="form-input"
           />
           <span class="help-text">Password must be at least 6 characters</span>
         </div>
@@ -34,12 +34,12 @@
         <div class="form-group">
           <label for="confirmPassword">Confirm Password</label>
           <input
-              id="confirmPassword"
-              v-model="confirmPassword"
-              type="password"
-              required
-              placeholder="Confirm your password"
-              class="form-input"
+            id="confirmPassword"
+            v-model="confirmPassword"
+            type="password"
+            required
+            placeholder="Confirm your password"
+            class="form-input"
           />
         </div>
 
@@ -49,10 +49,10 @@
 
         <div class="form-actions">
           <button
-              type="submit"
-              class="btn btn-gradient w-full"
-              :class="{ 'btn-loading': loading }"
-              :disabled="loading"
+            type="submit"
+            class="btn btn-gradient w-full"
+            :class="{ 'btn-loading': loading }"
+            :disabled="loading"
           >
             <span v-if="!loading">Register</span>
           </button>
@@ -76,36 +76,36 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
-const router = useRouter();
-const authStore = useAuthStore();
+const router = useRouter()
+const authStore = useAuthStore()
 
-const email = ref('');
-const password = ref('');
-const confirmPassword = ref('');
-const loading = ref(false);
-const error = ref('');
+const email = ref('')
+const password = ref('')
+const confirmPassword = ref('')
+const loading = ref(false)
+const error = ref('')
 
 async function handleRegister() {
-  loading.value = true;
-  error.value = '';
+  loading.value = true
+  error.value = ''
 
   if (password.value !== confirmPassword.value) {
-    error.value = 'Passwords do not match';
-    loading.value = false;
-    return;
+    error.value = 'Passwords do not match'
+    loading.value = false
+    return
   }
 
   try {
-    await authStore.signUp(email.value, password.value);
-    router.push('/login');
+    await authStore.signUp(email.value, password.value)
+    router.push('/login')
   } catch (err) {
-    error.value = err.message || 'Registration failed. Please try again.';
+    error.value = err.message || 'Registration failed. Please try again.'
   } finally {
-    loading.value = false;
+    loading.value = false
   }
 }
 </script>
