@@ -1,8 +1,8 @@
 <!-- src/views/HomeView.vue -->
 <template>
-  <div class="home-container">
-    <header class="home-header">
-      <h1 class="home-title">Welcome to CopyGenius AI</h1>
+  <div class="home-container animate-fade-in">
+    <header class="home-header glass-card bg-aurora-gradient-diagonal">
+      <h1 class="home-title text-shadow-glow-white">Welcome to CopyGenius AI</h1>
       <p class="home-subtitle">
         Your AI-powered copywriting assistant to create compelling marketing content
       </p>
@@ -10,7 +10,7 @@
         <router-link to="/projects" class="btn btn-primary">
           View Your Projects
         </router-link>
-        <router-link to="/projects/new" class="btn btn-secondary">
+        <router-link to="/projects/new" class="btn btn-glass">
           Create New Project
         </router-link>
       </div>
@@ -18,10 +18,10 @@
 
     <section class="stats-section" v-if="recentProjects.length > 0 || recentContentPieces.length > 0">
       <div class="stats-container">
-        <div class="stats-card">
+        <div class="stats-card card-glass hover:card-hover">
           <h3 class="stats-title">Recent Projects</h3>
           <div v-if="loading" class="loading">
-            <div class="loading-spinner"></div>
+            <div class="spinner spinner-sm"></div>
             <span>Loading projects...</span>
           </div>
           <div v-else-if="recentProjects.length === 0" class="empty-state">
@@ -37,10 +37,10 @@
           </ul>
         </div>
 
-        <div class="stats-card">
+        <div class="stats-card card-glass hover:card-hover">
           <h3 class="stats-title">Recent Content</h3>
           <div v-if="loading" class="loading">
-            <div class="loading-spinner"></div>
+            <div class="spinner spinner-sm"></div>
             <span>Loading content...</span>
           </div>
           <div v-else-if="recentContentPieces.length === 0" class="empty-state">
@@ -51,7 +51,7 @@
               <router-link :to="`/content/${content.id}`" class="stats-link">
                 {{ content.title }}
               </router-link>
-              <span class="content-type">{{ formatContentType(content.content_type) }}</span>
+              <span class="content-type badge badge-primary">{{ formatContentType(content.content_type) }}</span>
             </li>
           </ul>
         </div>
@@ -59,34 +59,61 @@
     </section>
 
     <section class="features-section">
-      <h2 class="section-title">What You Can Do</h2>
+      <h2 class="section-title text-shadow-glow-subtle">What You Can Do</h2>
       <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">📝</div>
+        <div class="feature-card card-glass hover:card-hover">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-accent-cyan">
+              <path d="M12 5.5V4"></path>
+              <path d="M12 20v-1.5"></path>
+              <path d="M4 12h1.5"></path>
+              <path d="M18.5 12H20"></path>
+              <path d="M17.5 20h-11a2.5 2.5 0 0 1 0-5h11a2.5 2.5 0 0 0 0-5h-11a2.5 2.5 0 0 1 0-5h11"></path>
+            </svg>
+          </div>
           <h3 class="feature-title">Create Engaging Copy</h3>
           <p class="feature-description">
             Generate high-quality, engaging copy for various marketing channels using AI.
           </p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon">🗂️</div>
+        <div class="feature-card card-glass hover:card-hover">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-accent-violet">
+              <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+              <path d="M9 4v16"></path>
+              <path d="M15 4v16"></path>
+              <path d="M4 9h16"></path>
+              <path d="M4 15h16"></path>
+            </svg>
+          </div>
           <h3 class="feature-title">Organize Projects</h3>
           <p class="feature-description">
             Keep your content organized by projects for different campaigns or clients.
           </p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon">🔄</div>
+        <div class="feature-card card-glass hover:card-hover">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-accent-teal">
+              <path d="M3 12h6"></path>
+              <path d="M15 12h6"></path>
+              <path d="M9 6l3 6 3-6"></path>
+              <path d="M9 18l3-6 3 6"></path>
+            </svg>
+          </div>
           <h3 class="feature-title">Version History</h3>
           <p class="feature-description">
             Track revisions and improvements to your content with version history.
           </p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon">⚡</div>
+        <div class="feature-card card-glass hover:card-hover">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-accent-gold">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+            </svg>
+          </div>
           <h3 class="feature-title">Quick Generation</h3>
           <p class="feature-description">
             Generate content in seconds with powerful AI models.
@@ -161,174 +188,3 @@ function formatContentType(contentType) {
       .join(' ');
 }
 </script>
-
-<style scoped>
-.home-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.home-header {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding: 2rem 1rem;
-  background-color: #f3f4f6;
-  border-radius: 0.5rem;
-}
-
-.home-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 1rem;
-}
-
-.home-subtitle {
-  font-size: 1.25rem;
-  color: #4b5563;
-  margin-bottom: 2rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.stats-section {
-  margin-bottom: 3rem;
-}
-
-.stats-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.stats-card {
-  background-color: #fff;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  height: 100%;
-}
-
-.stats-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: #1f2937;
-}
-
-.stats-list {
-  list-style: none;
-  padding: 0;
-}
-
-.stats-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.stats-item:last-child {
-  border-bottom: none;
-}
-
-.stats-link {
-  color: #4f46e5;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.stats-link:hover {
-  text-decoration: underline;
-}
-
-.stats-date, .content-type {
-  font-size: 0.875rem;
-  color: #6b7280;
-}
-
-.content-type {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  background-color: #f3f4f6;
-  border-radius: 9999px;
-}
-
-.empty-state {
-  color: #6b7280;
-  font-style: italic;
-  text-align: center;
-  padding: 1.5rem 0;
-}
-
-.features-section {
-  margin-bottom: 3rem;
-}
-
-.section-title {
-  font-size: 1.75rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: #1f2937;
-  text-align: center;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-.feature-card {
-  background-color: #fff;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-.feature-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.feature-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  color: #1f2937;
-}
-
-.feature-description {
-  color: #4b5563;
-  line-height: 1.5;
-}
-
-@media (max-width: 768px) {
-  .action-buttons {
-    flex-direction: column;
-  }
-
-  .home-title {
-    font-size: 2rem;
-  }
-
-  .home-subtitle {
-    font-size: 1.125rem;
-  }
-}
-</style>

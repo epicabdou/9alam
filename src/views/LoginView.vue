@@ -1,8 +1,8 @@
 <!-- src/views/LoginView.vue -->
 <template>
-  <div class="auth-container">
-    <div class="form-container">
-      <h1 class="form-title">Login to Your Account</h1>
+  <div class="auth-container animate-fade-in">
+    <div class="form-container glass-card">
+      <h1 class="form-title text-shadow-glow-violet">Login to Your Account</h1>
 
       <form @submit.prevent="handleLogin">
         <div class="form-group">
@@ -13,6 +13,7 @@
               type="email"
               required
               placeholder="Your email address"
+              class="form-input"
           />
         </div>
 
@@ -24,21 +25,22 @@
               type="password"
               required
               placeholder="Your password"
+              class="form-input"
           />
         </div>
 
-        <div v-if="error" class="error-message">
+        <div v-if="error" class="alert alert-danger">
           {{ error }}
         </div>
 
         <div class="form-actions">
           <button
               type="submit"
-              class="btn btn-primary w-full"
+              class="btn btn-gradient w-full"
+              :class="{ 'btn-loading': loading }"
               :disabled="loading"
           >
-            <span v-if="loading">Logging in...</span>
-            <span v-else>Login</span>
+            <span v-if="!loading">Login</span>
           </button>
         </div>
       </form>
@@ -80,40 +82,3 @@ async function handleLogin() {
   }
 }
 </script>
-
-<style scoped>
-.auth-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-}
-
-.form-container {
-  width: 100%;
-}
-
-.form-actions {
-  margin-top: 1.5rem;
-}
-
-.w-full {
-  width: 100%;
-}
-
-.auth-links {
-  margin-top: 1.5rem;
-  text-align: center;
-  color: #6b7280;
-}
-
-.auth-link {
-  color: #4f46e5;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.auth-link:hover {
-  text-decoration: underline;
-}
-</style>

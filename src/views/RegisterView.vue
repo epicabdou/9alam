@@ -1,8 +1,8 @@
 <!-- src/views/RegisterView.vue -->
 <template>
-  <div class="auth-container">
-    <div class="form-container">
-      <h1 class="form-title">Create an Account</h1>
+  <div class="auth-container animate-fade-in">
+    <div class="form-container glass-card">
+      <h1 class="form-title text-shadow-glow-violet">Create an Account</h1>
 
       <form @submit.prevent="handleRegister">
         <div class="form-group">
@@ -13,6 +13,7 @@
               type="email"
               required
               placeholder="Your email address"
+              class="form-input"
           />
         </div>
 
@@ -25,6 +26,7 @@
               required
               placeholder="Create a password"
               minlength="6"
+              class="form-input"
           />
           <span class="help-text">Password must be at least 6 characters</span>
         </div>
@@ -37,24 +39,31 @@
               type="password"
               required
               placeholder="Confirm your password"
+              class="form-input"
           />
         </div>
 
-        <div v-if="error" class="error-message">
+        <div v-if="error" class="alert alert-danger">
           {{ error }}
         </div>
 
         <div class="form-actions">
           <button
               type="submit"
-              class="btn btn-primary w-full"
+              class="btn btn-gradient w-full"
+              :class="{ 'btn-loading': loading }"
               :disabled="loading"
           >
-            <span v-if="loading">Creating account...</span>
-            <span v-else>Register</span>
+            <span v-if="!loading">Register</span>
           </button>
         </div>
       </form>
+
+      <div class="divider my-6 flex items-center">
+        <div class="flex-1 border-t border-panel-medium"></div>
+        <span class="px-4 text-text-muted">or</span>
+        <div class="flex-1 border-t border-panel-medium"></div>
+      </div>
 
       <div class="auth-links">
         <p>
@@ -100,47 +109,3 @@ async function handleRegister() {
   }
 }
 </script>
-
-<style scoped>
-.auth-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-}
-
-.form-container {
-  width: 100%;
-}
-
-.form-actions {
-  margin-top: 1.5rem;
-}
-
-.w-full {
-  width: 100%;
-}
-
-.auth-links {
-  margin-top: 1.5rem;
-  text-align: center;
-  color: #6b7280;
-}
-
-.auth-link {
-  color: #4f46e5;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.auth-link:hover {
-  text-decoration: underline;
-}
-
-.help-text {
-  display: block;
-  font-size: 0.75rem;
-  color: #6b7280;
-  margin-top: 0.25rem;
-}
-</style>
