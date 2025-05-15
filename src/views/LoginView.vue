@@ -1,56 +1,44 @@
 <!-- src/views/LoginView.vue -->
 <template>
-  <div class="auth-container animate-fade-in">
-    <div class="form-container glass-card">
-      <h1 class="form-title text-shadow-glow-violet">Login to Your Account</h1>
-
+  <div class="min-h-screen flex items-center justify-center bg-background-darkest p-4">
+    <div class="glass-card w-full max-w-md p-8">
+      <h1 class="heading-2 text-text-light text-center mb-6 text-shadow-glow-violet">Login</h1>
       <form @submit.prevent="handleLogin">
-        <div class="form-group">
-          <label for="email">Email</label>
+        <div class="mb-4">
+          <label for="email" class="block text-text-muted mb-2">Email</label>
           <input
+            type="email"
             id="email"
             v-model="email"
-            type="email"
-            required
-            placeholder="Your email address"
             class="form-input"
+            :class="{ 'form-input-focus': emailFocused, 'form-error': authError }"
+            @focus="emailFocused = true"
+            @blur="emailFocused = false"
+            required
           />
         </div>
-
-        <div class="form-group">
-          <label for="password">Password</label>
+        <div class="mb-6">
+          <label for="password" class="block text-text-muted mb-2">Password</label>
           <input
+            type="password"
             id="password"
             v-model="password"
-            type="password"
-            required
-            placeholder="Your password"
             class="form-input"
+            :class="{ 'form-input-focus': passwordFocused, 'form-error': authError }"
+            @focus="passwordFocused = true"
+            @blur="passwordFocused = false"
+            required
           />
         </div>
-
-        <div v-if="error" class="alert alert-danger">
-          {{ error }}
-        </div>
-
-        <div class="form-actions">
-          <button
-            type="submit"
-            class="btn btn-gradient w-full"
-            :class="{ 'btn-loading': loading }"
-            :disabled="loading"
-          >
-            <span v-if="!loading">Login</span>
-          </button>
-        </div>
+        <p v-if="authError" class="error-message mb-4">{{ authError }}</p>
+        <button type="submit" class="btn btn-primary w-full btn-lg" :class="{'btn-loading': loading}">
+          <span :class="{'btn-loading-spin': loading}"></span>
+          Login
+        </button>
       </form>
-
-      <div class="auth-links">
-        <p>
-          Don't have an account?
-          <router-link to="/register" class="auth-link">Register</router-link>
-        </p>
-      </div>
+      <p class="text-text-muted text-center mt-6">
+        Don't have an account? <router-link to="/register" class="text-accent-cyan hover:text-shadow-glow-cyan">Register</router-link>
+      </p>
     </div>
   </div>
 </template>
